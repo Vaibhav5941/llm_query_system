@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LLM Query System</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    textarea { width: 100%; height: 100px; }
+    .response-box { margin-top: 20px; padding: 10px; background: #f2f2f2; }
+  </style>
+</head>
+<body>
+
+  <h1>Ask a Question from a Policy Document</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    
+    <label>Select Document:</label>
+    <select name="document_id" required>
+      {% for doc in documents %}
+        <option value="{{ doc.id }}" {% if selected_doc == doc.id %}selected{% endif %}>
+          {{ doc.title }}
+        </option>
+      {% endfor %}
+    </select><br><br>
+
+    <label>Enter your query:</label><br>
+    <textarea name="question" required>{{ question|default_if_none:"" }}</textarea><br><br>
+
+    <button type="submit">Ask</button>
+  </form>
+
+  {% if response %}
+  <div class="response-box">
+    <h3>Decision: {{ response.decision }}</h3>
+    <p><strong>Amount:</strong> {{ response.amount }}</p>
+    <p><strong>Justification:</strong><br>{{ response.llm_response }}</p>
+    <p><strong>Cached:</strong> {{ response.cached }}</p>
+  </div>
+  {% endif %}
+
+</body>
+</html>
