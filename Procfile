@@ -1,3 +1,1 @@
-
-web: gunicorn llm_query_system.wsgi --log-file -
-
+web: gunicorn llm_query_system.wsgi
