@@ -213,9 +213,12 @@ check_cache_or_query_llm = None
 # Try to setup Django and import models
 try:
     import django
+    from django.conf import settings
+    
     # Setup Django environment before imports
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "llm_query_system.settings")
-    django.setup()
+    if not settings.configured:
+        django.setup()
     
     from core.models import Document
     from core.logic.cache import check_cache_or_query_llm
